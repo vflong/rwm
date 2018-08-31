@@ -29,7 +29,7 @@ import java.util.Set;
 @EnableAutoConfiguration
 @EnableGlobalMethodSecurity
 @Configuration
-@PropertySource("redis.properties")
+@PropertySource("classpath:redis.properties")
 public class rwmApplication {
     @Value("${spring.redis.host}")
     private String redisHost;
