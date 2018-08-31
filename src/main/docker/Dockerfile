@@ -18,10 +18,10 @@ RUN echo "http://mirrors.aliyun.com/alpine/v3.6/main" > /etc/apk/repositories \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone
 
-ADD rwm-${VERSION}-github.zip /rwm/rwm-${VERSION}-github.zip
+ADD rwm-${VERSION}.zip /rwm/rwm-${VERSION}.zip
 
-RUN unzip /rwm/rwm-${VERSION}-github.zip -d /rwm \
-    && rm -rf /rwm/rwm-${VERSION}-github.zip \
+RUN unzip /rwm/rwm-${VERSION}.zip -d /rwm \
+    && rm -rf /rwm/rwm-${VERSION}.zip \
     && sed -i '$d' /rwm/scripts/startup.sh \
     && echo "tail -f /dev/null" >> /rwm/scripts/startup.sh
 
