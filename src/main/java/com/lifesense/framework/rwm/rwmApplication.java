@@ -3,8 +3,6 @@ package com.lifesense.framework.rwm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,8 +26,6 @@ import java.util.Set;
 @EnableSwagger2
 @EnableAutoConfiguration
 @EnableGlobalMethodSecurity
-@Configuration
-@PropertySource("redis.properties")
 public class rwmApplication {
     @Value("${spring.redis.host}")
     private String redisHost;
