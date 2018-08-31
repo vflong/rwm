@@ -5,10 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -41,7 +38,7 @@ public class rwmApplication {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     String home() {
-        return "Hello World!";
+        return "Redis Web Manager!";
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
@@ -51,8 +48,8 @@ public class rwmApplication {
         return value;
     }
 
-    @RequestMapping(value = "/keys/{keyword}", method = RequestMethod.GET)
-    List<String> keys(@PathVariable String keyword) {
+    @RequestMapping(value = "/keys", method = RequestMethod.GET)
+    List<String> keys(@RequestParam(value = "keyword", defaultValue = "*") String keyword) {
         Jedis jedis = new Jedis(redisHost);
         Set<String> redisKeys = jedis.keys(keyword);
         List<String> keysList = new ArrayList<>();
@@ -64,30 +61,30 @@ public class rwmApplication {
         return keysList;
     }
 
-    @RequestMapping(value = "/type/{key}", method = RequestMethod.GET)
-    String type(@PathVariable String key) {
+    @RequestMapping(value = "/type", method = RequestMethod.GET)
+    String type(@RequestParam(value = "key") String key) {
         Jedis jedis = new Jedis(redisHost);
         String value = jedis.type(key);
         return "type: " + value;
     }
 
-    @RequestMapping(value = "/get/{key}", method = RequestMethod.GET)
-    String get(@PathVariable String key) {
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    String get(@RequestParam(value = "key", defaultValue = "foo") String key) {
         Jedis jedis = new Jedis(redisHost);
         String value = jedis.get(key);
         return key + ": " + value;
     }
 
-    @RequestMapping(value = "/del/{key}", method = RequestMethod.GET)
-    String del(@PathVariable String key) {
+    @RequestMapping(value = "/del", method = RequestMethod.GET)
+    String del(@RequestParam(value = "key") String key) {
         Jedis jedis = new Jedis(redisHost);
         jedis.del(key);
         String value = jedis.get(key);
         return key + ": " + value;
     }
 
-    @RequestMapping(value = "/set/{key}/{value}", method = RequestMethod.GET)
-    String set(@PathVariable String key, @PathVariable String value) {
+    @RequestMapping(value = "/set", method = RequestMethod.GET)
+    String set(@RequestParam(value = "key") String key, @RequestParam(value="value") String value) {
         Jedis jedis = new Jedis(redisHost);
         jedis.set(key, value);
         return key + ": " + value;
