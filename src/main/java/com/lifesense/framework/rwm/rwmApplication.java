@@ -55,10 +55,10 @@ public class rwmApplication {
         return value;
     }
 
-    @RequestMapping(value = "/keys", method = RequestMethod.GET)
-    List<String> keys() {
+    @RequestMapping(value = "/keys/{keyword}", method = RequestMethod.GET)
+    List<String> keys(@PathVariable String keyword) {
         Jedis jedis = new Jedis(redisHost);
-        Set<String> redisKeys = jedis.keys("*");
+        Set<String> redisKeys = jedis.keys(keyword);
         List<String> keysList = new ArrayList<>();
         Iterator<String> it = redisKeys.iterator();
         while (it.hasNext()) {
