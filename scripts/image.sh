@@ -3,6 +3,7 @@
 # feilong <weifeilong2013@gmail.com>
 
 buildImage(){
+    project=$1
     echo "==== starting to build ${project} image ===="
     cd target
     cp ../src/main/docker/Dockerfile .
