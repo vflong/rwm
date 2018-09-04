@@ -70,13 +70,6 @@ public class rwmApplication {
         return "type: " + value;
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    String get(@RequestParam(value = "key", defaultValue = "foo") String key) {
-        Jedis jedis = new Jedis(redisHost);
-        String value = jedis.get(key);
-        return key + ": " + value;
-    }
-
     @RequestMapping(value = "/del", method = RequestMethod.GET)
     String del(@RequestParam(value = "key") String key) {
         Jedis jedis = new Jedis(redisHost);
@@ -85,10 +78,17 @@ public class rwmApplication {
         return key + ": " + value;
     }
 
-    @RequestMapping(value = "/set", method = RequestMethod.GET)
+    @RequestMapping(value = "/string/set", method = RequestMethod.GET)
     String set(@RequestParam(value = "key") String key, @RequestParam(value="value") String value) {
         Jedis jedis = new Jedis(redisHost);
         jedis.set(key, value);
+        return key + ": " + value;
+    }
+
+    @RequestMapping(value = "/string/get", method = RequestMethod.GET)
+    String get(@RequestParam(value = "key", defaultValue = "foo") String key) {
+        Jedis jedis = new Jedis(redisHost);
+        String value = jedis.get(key);
         return key + ": " + value;
     }
 
