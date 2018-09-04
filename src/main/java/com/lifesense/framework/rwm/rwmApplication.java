@@ -39,9 +39,7 @@ public class rwmApplication {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    String info(@RequestParam(value = "redisAddr", required = false) String redisAddr) {
-        if(redisAddr != null && !redisAddr.isEmpty())
-                redisHost = redisAddr;
+    String info() {
         Jedis jedis = new Jedis(redisHost);
         return jedis.info();
     }
