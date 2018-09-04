@@ -13,10 +13,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @RestController
@@ -67,7 +64,7 @@ public class rwmApplication {
     String type(@RequestParam(value = "key") String key) {
         Jedis jedis = new Jedis(redisHost);
         String value = jedis.type(key);
-        return "type: " + value;
+        return key + ": \n  type: " + value;
     }
 
     @RequestMapping(value = "/del", method = RequestMethod.GET)
@@ -78,18 +75,47 @@ public class rwmApplication {
         return key + ": " + value;
     }
 
-    @RequestMapping(value = "/string/set", method = RequestMethod.GET)
+    @RequestMapping(value = "/set", method = RequestMethod.GET)
     String set(@RequestParam(value = "key") String key, @RequestParam(value="value") String value) {
         Jedis jedis = new Jedis(redisHost);
         jedis.set(key, value);
         return key + ": " + value;
     }
 
-    @RequestMapping(value = "/string/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     String get(@RequestParam(value = "key", defaultValue = "foo") String key) {
         Jedis jedis = new Jedis(redisHost);
         String value = jedis.get(key);
         return key + ": " + value;
+    }
+
+    @RequestMapping(value = "/hgetall", method = RequestMethod.GET)
+    String hgetall(@RequestParam(value = "key") String key) {
+        Jedis jedis = new Jedis(redisHost);
+        Map<String, String> value = jedis.hgetAll(key);
+        return key + ": \n  " + value;
+    }
+
+    @RequestMapping(value = "/lrange", method = RequestMethod.GET)
+    String lrange(@RequestParam(value = "key") String key) {
+        Jedis jedis = new Jedis(redisHost);
+        long keyLen = jedis.llen(key);
+        List value = jedis.lrange(key, 0, keyLen);
+        return key + ": \n  " + value;
+    }
+
+    @RequestMapping(value = "/smembers", method = RequestMethod.GET)
+    String smembers(@RequestParam(value = "key") String key) {
+        Jedis jedis = new Jedis(redisHost);
+        Set value = jedis.smembers(key);
+        return key + ": \n  " + value;
+    }
+
+    @RequestMapping(value = "/zrange", method = RequestMethod.GET)
+    String zrange(@RequestParam(value = "key") String key) {
+        Jedis jedis = new Jedis(redisHost);
+        Set value = jedis.zrange(key, 0, -1);
+        return key + ": \n  " + value;
     }
 
     public static void main(String[] args) throws Exception {
