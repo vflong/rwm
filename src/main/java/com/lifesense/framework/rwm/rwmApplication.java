@@ -43,8 +43,7 @@ public class rwmApplication {
         if(redisAddr != null && !redisAddr.isEmpty())
                 redisHost = redisAddr;
         Jedis jedis = new Jedis(redisHost);
-        String value = jedis.info();
-        return value;
+        return jedis.info();
     }
 
     @RequestMapping(value = "/keys", method = RequestMethod.GET)
@@ -52,11 +51,7 @@ public class rwmApplication {
         Jedis jedis = new Jedis(redisHost);
         Set<String> redisKeys = jedis.keys(keyword);
         List<String> keysList = new ArrayList<>();
-        Iterator<String> it = redisKeys.iterator();
-        while (it.hasNext()) {
-            String data = it.next();
-            keysList.add(data);
-        }
+        keysList.addAll(redisKeys);
         return keysList;
     }
 
