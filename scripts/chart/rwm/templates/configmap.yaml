@@ -9,9 +9,10 @@ metadata:
     heritage: "{{ .Release.Service }}"
 data:
   application.properties: |-
-    spring.application.name = rwm
+    debug = false
     server.port = 8080
     spring.security.user.name = {{ .Values.env.username }}
     spring.security.user.password = {{ .Values.env.password }}
-    spring.redis.host = {{ .Values.env.redisHost }}
-    spring.redis.database = 0
+    spring.redis.host = localhost
+    spring.redis.host.1 = {{ .Values.env.redisHostQA }}
+    spring.redis.host.2 = {{ .Values.env.redisHostQA2 }}

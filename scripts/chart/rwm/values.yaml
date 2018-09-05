@@ -38,4 +38,5 @@ resources: {}
 env:
   username: admin
   password: admin
-  redisHost: localhost
+  redisHostQA: localhost
+  redisHostQA2: localhost
