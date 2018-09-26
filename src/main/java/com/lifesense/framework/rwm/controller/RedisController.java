@@ -17,6 +17,8 @@ public class RedisController {
     private String redisHostQA;
     @Value("${spring.redis.host.2}")
     private String redisHostQA2;
+    @Value("${spring.redis.host.3}")
+    private String redisHostOnline;
     String redisHost;
 
     String envChoice(String env) {
@@ -25,6 +27,8 @@ public class RedisController {
                 return redisHostQA;
             case "qa2":
                 return redisHostQA2;
+            case "online":
+                return redisHostOnline;
             default:
                 return redisHostDefault;
         }
