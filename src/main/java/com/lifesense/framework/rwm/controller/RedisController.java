@@ -2,7 +2,9 @@ package com.lifesense.framework.rwm.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisCluster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,14 +50,23 @@ public class RedisController {
     String info(@RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
+        if (env.equals("online")) {
+            JedisCluster jedis = new JedisCluster(new HostAndPort(redisHost, Integer.valueOf(redisPort)));
+            return jedis.info();
+        }
         Jedis jedis = new Jedis(redisHost, Integer.valueOf(redisPort));
         return jedis.info();
     }
 
     @RequestMapping(value = "/keys", method = RequestMethod.GET)
-    List<String> keys(@RequestParam(value = "keyword", defaultValue = "*") String keyword, @RequestParam(value = "env", defaultValue = "qa2") String env) {
+    List<String> keys(@RequestParam(value = "keyword", defaultValue = "*foo*") String keyword, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
+        if (env.equals("online")) {
+            List ret = new ArrayList<String>();
+            ret.add("不支持的操作！！！");
+            return ret;
+        }
         Jedis jedis = new Jedis(redisHost, Integer.valueOf(redisPort));
         Set<String> redisKeys = jedis.keys(keyword);
         List<String> keysList = new ArrayList<>(redisKeys);
@@ -66,6 +77,11 @@ public class RedisController {
     String type(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
+        if (env.equals("online")) {
+            JedisCluster jedis = new JedisCluster(new HostAndPort(redisHost, Integer.valueOf(redisPort)));
+            String value = jedis.type(key);
+            return key + ": \n  type: " + value;
+        }
         Jedis jedis = new Jedis(redisHost, Integer.valueOf(redisPort));
         String value = jedis.type(key);
         return key + ": \n  type: " + value;
@@ -75,6 +91,9 @@ public class RedisController {
     String del(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
+        if (env.equals("online")) {
+            return "Online 环境禁止 del 操作！！！";
+        }
         Jedis jedis = new Jedis(redisHost, Integer.valueOf(redisPort));
         jedis.del(key);
         String value = jedis.get(key);
@@ -85,6 +104,11 @@ public class RedisController {
     String set(@RequestParam(value = "key") String key, @RequestParam(value="value") String value, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
+        if (env.equals("online")) {
+            JedisCluster jedis = new JedisCluster(new HostAndPort(redisHost, Integer.valueOf(redisPort)));
+            jedis.set(key, value);
+            return key + ": " + value;
+        }
         Jedis jedis = new Jedis(redisHost, Integer.valueOf(redisPort));
         jedis.set(key, value);
         return key + ": " + value;
@@ -94,6 +118,11 @@ public class RedisController {
     String get(@RequestParam(value = "key", defaultValue = "foo") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
+        if (env.equals("online")) {
+            JedisCluster jedis = new JedisCluster(new HostAndPort(redisHost, Integer.valueOf(redisPort)));
+            String value = jedis.get(key);
+            return key + ": " + value;
+        }
         Jedis jedis = new Jedis(redisHost, Integer.valueOf(redisPort));
         String value = jedis.get(key);
         return key + ": " + value;
@@ -103,6 +132,11 @@ public class RedisController {
     String hgetall(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
+        if (env.equals("online")) {
+            JedisCluster jedis = new JedisCluster(new HostAndPort(redisHost, Integer.valueOf(redisPort)));
+            Map<String, String> value = jedis.hgetAll(key);
+            return key + ": \n  " + value;
+        }
         Jedis jedis = new Jedis(redisHost, Integer.valueOf(redisPort));
         Map<String, String> value = jedis.hgetAll(key);
         return key + ": \n  " + value;
@@ -112,6 +146,12 @@ public class RedisController {
     String lrange(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
+        if (env.equals("online")) {
+            JedisCluster jedis = new JedisCluster(new HostAndPort(redisHost, Integer.valueOf(redisPort)));
+            long keyLen = jedis.llen(key);
+            List value = jedis.lrange(key, 0, keyLen);
+            return key + ": \n  " + value;
+        }
         Jedis jedis = new Jedis(redisHost, Integer.valueOf(redisPort));
         long keyLen = jedis.llen(key);
         List value = jedis.lrange(key, 0, keyLen);
@@ -122,6 +162,11 @@ public class RedisController {
     String smembers(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
+        if (env.equals("online")) {
+            JedisCluster jedis = new JedisCluster(new HostAndPort(redisHost, Integer.valueOf(redisPort)));
+            Set value = jedis.smembers(key);
+            return key + ": \n  " + value;
+        }
         Jedis jedis = new Jedis(redisHost, Integer.valueOf(redisPort));
         Set value = jedis.smembers(key);
         return key + ": \n  " + value;
@@ -131,6 +176,11 @@ public class RedisController {
     String zrange(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
+        if (env.equals("online")) {
+            JedisCluster jedis = new JedisCluster(new HostAndPort(redisHost, Integer.valueOf(redisPort)));
+            Set value = jedis.zrange(key, 0, -1);
+            return key + ": \n  " + value;
+        }
         Jedis jedis = new Jedis(redisHost, Integer.valueOf(redisPort));
         Set value = jedis.zrange(key, 0, -1);
         return key + ": \n  " + value;
