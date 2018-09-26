@@ -46,7 +46,7 @@ public class RedisController {
         }
     }
 
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequestMapping(value = "/redis/info", method = RequestMethod.GET)
     String info(@RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
@@ -58,7 +58,7 @@ public class RedisController {
         return jedis.info();
     }
 
-    @RequestMapping(value = "/keys", method = RequestMethod.GET)
+    @RequestMapping(value = "/redis/keys", method = RequestMethod.GET)
     List<String> keys(@RequestParam(value = "keyword", defaultValue = "*foo*") String keyword, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
@@ -73,7 +73,7 @@ public class RedisController {
         return keysList;
     }
 
-    @RequestMapping(value = "/type", method = RequestMethod.GET)
+    @RequestMapping(value = "/redis/type", method = RequestMethod.GET)
     String type(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
@@ -87,7 +87,7 @@ public class RedisController {
         return key + ": \n  type: " + value;
     }
 
-    @RequestMapping(value = "/del", method = RequestMethod.GET)
+    @RequestMapping(value = "/redis/del", method = RequestMethod.GET)
     String del(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
@@ -100,7 +100,7 @@ public class RedisController {
         return key + ": " + value;
     }
 
-    @RequestMapping(value = "/set", method = RequestMethod.GET)
+    @RequestMapping(value = "/redis/set", method = RequestMethod.GET)
     String set(@RequestParam(value = "key") String key, @RequestParam(value="value") String value, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
@@ -114,7 +114,7 @@ public class RedisController {
         return key + ": " + value;
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/redis/get", method = RequestMethod.GET)
     String get(@RequestParam(value = "key", defaultValue = "foo") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
@@ -128,7 +128,7 @@ public class RedisController {
         return key + ": " + value;
     }
 
-    @RequestMapping(value = "/hgetall", method = RequestMethod.GET)
+    @RequestMapping(value = "/redis/hgetall", method = RequestMethod.GET)
     String hgetall(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
@@ -142,7 +142,7 @@ public class RedisController {
         return key + ": \n  " + value;
     }
 
-    @RequestMapping(value = "/lrange", method = RequestMethod.GET)
+    @RequestMapping(value = "/redis/lrange", method = RequestMethod.GET)
     String lrange(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
@@ -158,7 +158,7 @@ public class RedisController {
         return key + ": \n  " + value;
     }
 
-    @RequestMapping(value = "/smembers", method = RequestMethod.GET)
+    @RequestMapping(value = "/redis/smembers", method = RequestMethod.GET)
     String smembers(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
@@ -172,7 +172,7 @@ public class RedisController {
         return key + ": \n  " + value;
     }
 
-    @RequestMapping(value = "/zrange", method = RequestMethod.GET)
+    @RequestMapping(value = "/redis/zrange", method = RequestMethod.GET)
     String zrange(@RequestParam(value = "key") String key, @RequestParam(value = "env", defaultValue = "qa2") String env) {
         redisHost = envChoice(env)[0];
         redisPort = envChoice(env)[1];
