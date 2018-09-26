@@ -40,3 +40,4 @@ env:
   password: admin
   redisHostQA: localhost
   redisHostQA2: localhost
+  redisHostOnline: localhost

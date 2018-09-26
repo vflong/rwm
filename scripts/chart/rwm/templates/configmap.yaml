@@ -16,3 +16,4 @@ data:
     spring.redis.host = localhost
     spring.redis.host.1 = {{ .Values.env.redisHostQA }}
     spring.redis.host.2 = {{ .Values.env.redisHostQA2 }}
+    spring.redis.host.3 = {{ .Values.env.redisHostOnline }}
