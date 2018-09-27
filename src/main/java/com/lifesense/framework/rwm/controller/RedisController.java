@@ -52,7 +52,7 @@ public class RedisController {
         redisPort = envChoice(env)[1];
         if (env.equals("online")) {
             JedisCluster jedis = new JedisCluster(new HostAndPort(redisHost, Integer.valueOf(redisPort)));
-            return jedis.info();
+            return String.valueOf(jedis.getClusterNodes());
         }
         Jedis jedis = new Jedis(redisHost, Integer.valueOf(redisPort));
         return jedis.info();
